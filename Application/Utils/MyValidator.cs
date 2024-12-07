@@ -9,6 +9,10 @@ namespace Application.Utils
 {
     public class MyValidator
     {
+        // Patrón para validar correos electrónicos
+        private static readonly string EmailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+        private static readonly Regex EmailRegex = new Regex(EmailPattern, RegexOptions.Compiled);
+
         public bool ValidateZone(string input)
         {
             // Verifica si el texto es nulo o está vacío
@@ -26,6 +30,24 @@ namespace Application.Utils
                 return false;
 
             return true;
+        }
+
+
+
+        /// <summary>
+        /// Valida si un texto cumple con el formato de un correo electrónico.
+        /// </summary>
+        /// <param name="email">Texto a validar.</param>
+        /// <returns>true si el texto es un correo electrónico válido; de lo contrario, false.</returns>
+        public bool IsValidEmail(string email)
+        {
+
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                return false; // Retorna false si el texto está vacío o es nulo
+            }
+
+            return EmailRegex.IsMatch(email); // Valida el texto contra el patrón
         }
     }
 }

@@ -25,7 +25,14 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IZoneServices, ZoneService>();
 builder.Services.AddScoped<IZoneRepository, ZoneRepository>();
 builder.Services.AddScoped<ZoneMapper>();
+
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+builder.Services.AddScoped<EmployeeMapper>();
+
+
 builder.Services.AddScoped<MyValidator>();
+builder.Services.AddScoped<UtilsJwt>();
 
 //Inyectamos la dependencia de la base de datos de Postgres
 builder.Services.AddDbContext<SlgDbContext>(options =>
