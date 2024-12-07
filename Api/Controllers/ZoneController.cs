@@ -47,5 +47,13 @@ namespace Api.Controllers
             var deleted = await _zoneServices.DeleteAsync(id);
             return Ok(deleted);
         }
+
+        [HttpPut]
+        [Route("Update/{id}")]
+        public async Task<IActionResult> UpdateAsync(int id, ZoneReq zone)
+        {
+            var updated = await _zoneServices.UpdateAsync(id, zone);
+            return Ok(updated);
+        }
     }
 }

@@ -54,9 +54,9 @@ namespace Application.Services
             return _zoneMapper.ToResponse(zone);
         }
 
-        public Task<int> UpdateAsync(int id, ZoneReq zone)
+        public async Task<int> UpdateAsync(int id, ZoneReq zone)
         {
-            throw new NotImplementedException();
+            return await _zoneRepository.UpdateAsync(id, _zoneMapper.ToEntity(zone));
         }
     }
 }

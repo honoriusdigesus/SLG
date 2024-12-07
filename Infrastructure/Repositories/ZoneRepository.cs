@@ -42,9 +42,12 @@ namespace Infrastructure.Repositories
             return _context.Zones.FirstOrDefaultAsync(x => x.ZoneId == id);
         }
 
-        public Task<int> UpdateAsync(int id, Zone zone)
+        public async Task<int> UpdateAsync(int id, Zone zone)
         {
-            throw new NotImplementedException();
+            var zoneToUpdate = await _context.Zones.FirstOrDefaultAsync(x => x.ZoneId == id);
+            zoneToUpdate.Zonename = zone.Zonename;
+            zoneToUpdate.Description = zone.Description;
+            return await _context.SaveChangesAsync();
         }
     }
 }
