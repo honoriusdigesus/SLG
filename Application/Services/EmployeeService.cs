@@ -43,9 +43,9 @@ namespace Application.Services
             throw new NotImplementedException();
         }
 
-        public Task<List<EmployeeRes>> GetAllAsync()
+        public async Task<List<EmployeeRes>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return (await _employeeRepository.GetAllAsync()).Select(_employeeMapper.ToResponse).ToList();
         }
 
         public Task<EmployeeRes> GetByIdAsync(int id)

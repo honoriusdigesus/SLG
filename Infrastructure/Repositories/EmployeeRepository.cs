@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain.Interfaces;
 using Infrastructure.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
@@ -29,9 +30,9 @@ namespace Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<List<Employee>> GetAllAsync()
+        public async Task<List<Employee>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Employees.ToListAsync();
         }
 
         public Task<Employee> GetByIdAsync(int id)

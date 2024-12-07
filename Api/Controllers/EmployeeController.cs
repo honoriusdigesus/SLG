@@ -23,5 +23,13 @@ namespace Api.Controllers
             var createdEmployee = await _employeeServices.CreateAsync(employee);
             return Ok(createdEmployee);
         }
+
+        [HttpGet]
+        [Route("GetAll")]
+        public async Task<IActionResult> GetAllAsync()
+        {
+            var employees = await _employeeServices.GetAllAsync();
+            return Ok(employees);
+        }
     }
 }
