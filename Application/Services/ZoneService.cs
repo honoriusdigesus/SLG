@@ -42,9 +42,9 @@ namespace Application.Services
             throw new NotImplementedException();
         }
 
-        public Task<List<ZoneRes>> GetAllAsync()
+        public async Task<List<ZoneRes>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return (await _zoneRepository.GetAllAsync()).Select(_zoneMapper.ToResponse).ToList();
         }
 
         public Task<ZoneRes> GetByIdAsync(int id)

@@ -32,9 +32,12 @@ namespace Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<List<Zone>> GetAllAsync()
+        public async Task<List<Zone>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await Task<List<Zone>>.Run(() =>
+            {
+                return _context.Zones.ToList();
+            });
         }
 
         public Task<Zone> GetByIdAsync(int id)

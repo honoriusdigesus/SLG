@@ -23,5 +23,13 @@ namespace Api.Controllers
             var createdZone = await _zoneServices.CreateAsync(zone);
             return Ok(createdZone);
         }
+
+        [HttpGet]
+        [Route("GetAll")]
+        public async Task<IActionResult> GetAllAsync()
+        {
+            var zones = await _zoneServices.GetAllAsync();
+            return Ok(zones);
+        }
     }
 }
