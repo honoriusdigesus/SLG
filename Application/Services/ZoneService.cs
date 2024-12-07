@@ -37,9 +37,10 @@ namespace Application.Services
             return _zoneMapper.ToResponse(createdZone);
         }
 
-        public Task<int> DeleteAsync(int id)
+        public async Task<int> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var zone = await _zoneRepository.GetByIdAsync(id) ?? throw new ZoneException($"Zone with ID {id} was not found.");
+            return await _zoneRepository.DeleteAsync(zone.ZoneId);
         }
 
         public async Task<List<ZoneRes>> GetAllAsync()

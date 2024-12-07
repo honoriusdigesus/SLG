@@ -25,9 +25,11 @@ namespace Infrastructure.Repositories
             return zone;
         }
 
-        public Task<int> DeleteAsync(int id)
+        public async Task<int> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var zone = await _context.Zones.FirstOrDefaultAsync(x => x.ZoneId == id);
+            _context.Zones.Remove(zone);
+            return await _context.SaveChangesAsync();
         }
 
         public async Task<List<Zone>> GetAllAsync()
