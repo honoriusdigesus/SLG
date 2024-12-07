@@ -31,5 +31,13 @@ namespace Api.Controllers
             var zones = await _zoneServices.GetAllAsync();
             return Ok(zones);
         }
+
+        [HttpGet]
+        [Route("GetById/{id}")]
+        public async Task<IActionResult> GetByIdAsync(int id)
+        {
+            var zone = await _zoneServices.GetByIdAsync(id);
+            return Ok(zone);
+        }
     }
 }

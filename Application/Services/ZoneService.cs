@@ -47,9 +47,10 @@ namespace Application.Services
             return (await _zoneRepository.GetAllAsync()).Select(_zoneMapper.ToResponse).ToList();
         }
 
-        public Task<ZoneRes> GetByIdAsync(int id)
+        public async Task<ZoneRes> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var zone = await _zoneRepository.GetByIdAsync(id) ?? throw new ZoneException($"Zone with ID {id} was not found.");
+            return _zoneMapper.ToResponse(zone);
         }
 
         public Task<int> UpdateAsync(int id, ZoneReq zone)

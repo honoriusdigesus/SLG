@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain.Interfaces;
 using Infrastructure.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
@@ -19,12 +20,9 @@ namespace Infrastructure.Repositories
 
         public async Task<Zone> CreateAsync(Zone zone)
         {
-            return await Task<Zone>.Run(() =>
-            {
-                _context.Zones.Add(zone);
-                _context.SaveChanges();
-                return zone;
-            });
+            await _context.Zones.AddAsync(zone);
+            await _context.SaveChangesAsync();
+            return zone;
         }
 
         public Task<int> DeleteAsync(int id)
@@ -34,15 +32,12 @@ namespace Infrastructure.Repositories
 
         public async Task<List<Zone>> GetAllAsync()
         {
-            return await Task<List<Zone>>.Run(() =>
-            {
-                return _context.Zones.ToList();
-            });
+            return await _context.Zones.ToListAsync();
         }
 
         public Task<Zone> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return _context.Zones.FirstOrDefaultAsync(x => x.ZoneId == id);
         }
 
         public Task<int> UpdateAsync(int id, Zone zone)
