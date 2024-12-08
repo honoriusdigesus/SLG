@@ -38,9 +38,13 @@ namespace Application.Services
             return _employeeMapper.ToResponse(await _employeeRepository.CreateAsync(_employeeMapper.ToEntity(employee)));
         }
 
-        public Task<int> DeleteAsync(int id)
+        public async Task<int> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            if (id <= 0)
+            {
+                throw new EmployeeException("Incorrect employee ID, please verify.");
+            }
+            return await _employeeRepository.DeleteAsync(id);
         }
 
         public async Task<List<EmployeeRes>> GetAllAsync()
@@ -59,7 +63,21 @@ namespace Application.Services
 
         public Task<int> UpdateAsync(int id, EmployeeReq employee)
         {
-            throw new NotImplementedException();
+            if (_validator.IsValidEmail(employee.Email) && !employee.Password.Equals("") && id>0)
+            {
+                employee.Password = _utilsJwt.EncryptPassword(employee.Password);
+                var result= _employeeRepository.UpdateAsync(id, _employeeMapper.ToEntity(employee));
+                if (result.Result == 0)
+                {
+                    throw new EmployeeException("Employee not found, please verify your information.");
+                }
+
+                return _employeeRepository.UpdateAsync(id, _employeeMapper.ToEntity(employee));
+            }
+            else
+            {
+                throw new EmployeeException("Incorrect employee information, please verify.");
+            }
         }
     }
 }

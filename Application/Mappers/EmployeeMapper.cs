@@ -31,6 +31,7 @@ namespace Application.Mappers
         {
             return new EmployeeRes
             {
+                Id = employee.EmployeeId,
                 Document = employee.Document,
                 Name = employee.Name,
                 Lastname = employee.Lastname,

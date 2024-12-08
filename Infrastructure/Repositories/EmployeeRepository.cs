@@ -26,9 +26,11 @@ namespace Infrastructure.Repositories
             return employee;
         }
 
-        public Task<int> DeleteAsync(int id)
+        public async Task<int> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var employee = await _context.Employees.FirstOrDefaultAsync(x => x.EmployeeId == id);
+            _context.Employees.Remove(employee);
+            return await _context.SaveChangesAsync();
         }
 
         public async Task<List<Employee>> GetAllAsync()
@@ -43,7 +45,19 @@ namespace Infrastructure.Repositories
 
         public Task<int> UpdateAsync(int id, Employee employee)
         {
-            throw new NotImplementedException();
+            var employeeToUpdate = _context.Employees.FirstOrDefault(x => x.EmployeeId == id);
+            if (employeeToUpdate != null) {
+                employeeToUpdate.Document = employee.Document;
+                employeeToUpdate.Name = employee.Name;
+                employeeToUpdate.Lastname = employee.Lastname;
+                employeeToUpdate.Email = employee.Email;
+                employeeToUpdate.Password = employee.Password;
+                employeeToUpdate.Role = employee.Role;
+                employeeToUpdate.Phone = employee.Phone;
+                employeeToUpdate.ZoneId = employee.ZoneId;
+                _context.Employees.Update(employeeToUpdate);
+            }
+            return _context.SaveChangesAsync();
         }
     }
 }

@@ -8,6 +8,7 @@ namespace Application.DTOs
 {
     public class EmployeeRes
     {
+        public int Id { get; set; }
         public string Document { get; set; } = null!;
 
         public string? Name { get; set; }

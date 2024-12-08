@@ -39,5 +39,21 @@ namespace Api.Controllers
             var employee = await _employeeServices.GetByIdAsync(id);
             return Ok(employee);
         }
+
+        [HttpDelete]
+        [Route("Delete/{id}")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            var deletedEmployee = await _employeeServices.DeleteAsync(id);
+            return Ok(deletedEmployee);
+        }
+
+        [HttpPut]
+        [Route("Update/{id}")]
+        public async Task<IActionResult> UpdateAsync(int id, EmployeeReq employee)
+        {
+            var updatedEmployee = await _employeeServices.UpdateAsync(id, employee);
+            return Ok(updatedEmployee);
+        }
     }
 }
