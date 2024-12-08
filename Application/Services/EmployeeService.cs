@@ -48,9 +48,13 @@ namespace Application.Services
             return (await _employeeRepository.GetAllAsync()).Select(_employeeMapper.ToResponse).ToList();
         }
 
-        public Task<EmployeeRes> GetByIdAsync(int id)
+        public async Task<EmployeeRes> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            if (id <= 0)
+            {
+                throw new EmployeeException("Incorrect employee ID, please verify.");
+            }
+            return _employeeMapper.ToResponse(await _employeeRepository.GetByIdAsync(id));
         }
 
         public Task<int> UpdateAsync(int id, EmployeeReq employee)

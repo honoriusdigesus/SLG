@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using IDomain.Entities;
 
-namespace Infrastructure.Entities;
+namespace Domain.Entities;
 
 public partial class Advance
 {

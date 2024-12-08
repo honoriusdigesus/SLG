@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Domain.Entities;
+using IDomain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Entities;
+namespace Infrastructure.Data;
 
 public partial class SlgDbContext : DbContext
 {
@@ -115,17 +117,13 @@ public partial class SlgDbContext : DbContext
             entity.HasIndex(e => e.EmployeeId, "creditcard_employee_id_key").IsUnique();
 
             entity.Property(e => e.CreditcardId).HasColumnName("creditcard_id");
-            entity.Property(e => e.Cardholdername)
-                .HasMaxLength(100)
-                .HasColumnName("cardholdername");
             entity.Property(e => e.Cardnumber)
                 .HasMaxLength(20)
                 .HasColumnName("cardnumber");
-            entity.Property(e => e.Cvv)
-                .HasMaxLength(4)
-                .HasColumnName("cvv");
+            entity.Property(e => e.Cardtype)
+                .HasMaxLength(100)
+                .HasColumnName("cardtype");
             entity.Property(e => e.EmployeeId).HasColumnName("employee_id");
-            entity.Property(e => e.Expirydate).HasColumnName("expirydate");
 
             entity.HasOne(d => d.Employee).WithOne(p => p.Creditcard)
                 .HasForeignKey<Creditcard>(d => d.EmployeeId)

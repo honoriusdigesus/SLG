@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Entities;
 using Domain.Interfaces;
-using Infrastructure.Entities;
+using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
@@ -35,9 +36,9 @@ namespace Infrastructure.Repositories
             return await _context.Employees.ToListAsync();
         }
 
-        public Task<Employee> GetByIdAsync(int id)
+        public async Task<Employee> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Employees.FirstOrDefaultAsync(x => x.EmployeeId == id);
         }
 
         public Task<int> UpdateAsync(int id, Employee employee)

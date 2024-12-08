@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Domain.Entities;
 
-namespace Infrastructure.Entities;
+namespace IDomain.Entities;
 
 public partial class Costcenter
 {

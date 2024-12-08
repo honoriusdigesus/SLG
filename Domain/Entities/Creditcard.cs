@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Infrastructure.Entities;
+namespace Domain.Entities;
 
 public partial class Creditcard
 {
@@ -9,11 +9,7 @@ public partial class Creditcard
 
     public string? Cardnumber { get; set; }
 
-    public DateOnly? Expirydate { get; set; }
-
-    public string? Cvv { get; set; }
-
-    public string? Cardholdername { get; set; }
+    public string? Cardtype { get; set; }
 
     public int? EmployeeId { get; set; }
 

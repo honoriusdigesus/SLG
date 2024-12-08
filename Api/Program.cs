@@ -3,7 +3,6 @@ using Application.Mappers;
 using Application.Services;
 using Application.Utils;
 using Domain.Interfaces;
-using Infrastructure.Entities;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,7 +34,7 @@ builder.Services.AddScoped<MyValidator>();
 builder.Services.AddScoped<UtilsJwt>();
 
 //Inyectamos la dependencia de la base de datos de Postgres
-builder.Services.AddDbContext<SlgDbContext>(options =>
+builder.Services.AddDbContext<Infrastructure.Data.SlgDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });

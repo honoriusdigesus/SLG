@@ -31,5 +31,13 @@ namespace Api.Controllers
             var employees = await _employeeServices.GetAllAsync();
             return Ok(employees);
         }
+
+        [HttpGet]
+        [Route("GetById/{id}")]
+        public async Task<IActionResult> GetByIdAsync(int id)
+        {
+            var employee = await _employeeServices.GetByIdAsync(id);
+            return Ok(employee);
+        }
     }
 }
