@@ -41,9 +41,9 @@ namespace Application.Services
             throw new NotImplementedException();
         }
 
-        public Task<List<CostCenterRes>> GetAllAsync()
+        public async Task<List<CostCenterRes>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return (await _costCenterRepository.GetAllAsync()).Select(_costCenterMapper.ToResponse).ToList();
         }
 
         public Task<CostCenterRes> GetByIdAsync(int id)
