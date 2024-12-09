@@ -20,7 +20,8 @@ namespace Application.Exceptions
             _exceptionHandlers = new Dictionary<Type, (HttpStatusCode, ErrorResponse)>
         {
                 { typeof(ZoneException), (HttpStatusCode.NotFound, new ErrorResponse("Z101", "ZONE INVALID", null)) },
-                { typeof(EmployeeException), (HttpStatusCode.NotFound, new ErrorResponse("E101", "EMPLOYEE INVALID", null)) }
+                { typeof(EmployeeException), (HttpStatusCode.NotFound, new ErrorResponse("E101", "EMPLOYEE INVALID", null)) },
+                { typeof(CostCenterException), (HttpStatusCode.NotFound, new ErrorResponse("CC101", "EMPLOYEE INVALID", null)) }
 
         };
         }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using IDomain.Entities;
 
 namespace Domain.Entities;
 

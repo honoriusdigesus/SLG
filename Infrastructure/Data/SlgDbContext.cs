@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Domain.Entities;
-using IDomain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Data;
+namespace Infrastructure.Data.Models;
 
 public partial class SlgDbContext : DbContext
 {
@@ -101,6 +100,9 @@ public partial class SlgDbContext : DbContext
 
             entity.Property(e => e.CostcenterId).HasColumnName("costcenter_id");
             entity.Property(e => e.Costcenternumber).HasColumnName("costcenternumber");
+            entity.Property(e => e.Description)
+                .HasMaxLength(100)
+                .HasColumnName("description");
             entity.Property(e => e.ProjectmanagerId).HasColumnName("projectmanager_id");
 
             entity.HasOne(d => d.Projectmanager).WithMany(p => p.Costcenters)

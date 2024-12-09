@@ -3,6 +3,7 @@ using Application.Mappers;
 using Application.Services;
 using Application.Utils;
 using Domain.Interfaces;
+using Infrastructure.Data.Models;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,12 +30,16 @@ builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<EmployeeMapper>();
 
+builder.Services.AddScoped<ICostCenterRepository, CostCenterRepository>();
+builder.Services.AddScoped<ICostCenterService, CostCenterService>();
+builder.Services.AddScoped<CostCenterMapper>();
+
 
 builder.Services.AddScoped<MyValidator>();
 builder.Services.AddScoped<UtilsJwt>();
 
 //Inyectamos la dependencia de la base de datos de Postgres
-builder.Services.AddDbContext<Infrastructure.Data.SlgDbContext>(options =>
+builder.Services.AddDbContext<SlgDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });

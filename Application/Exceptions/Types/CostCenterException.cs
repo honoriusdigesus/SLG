@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Application.Exceptions.Types
 {
-    public class ZoneException : System.Exception
+    public class CostCenterException : System.Exception
     {
-        public ZoneException(string message) : base(message)
+        public CostCenterException(string message) : base(message)
         {
         }
     }
