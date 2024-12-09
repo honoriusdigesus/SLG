@@ -25,9 +25,11 @@ namespace Infrastructure.Repositories
             return costcenter;
         }
 
-        public Task<int> DeleteAsync(int id)
+        public async Task<int> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var costcenter = await _context.Costcenters.FirstOrDefaultAsync(x => x.CostcenterId == id);
+            _context.Costcenters.Remove(costcenter);
+            return await _context.SaveChangesAsync();
         }
 
         public async Task<List<Costcenter>> GetAllAsync()
@@ -35,14 +37,22 @@ namespace Infrastructure.Repositories
             return await _context.Costcenters.ToListAsync();
         }
 
-        public Task<Costcenter> GetByIdAsync(int id)
+        public async Task<Costcenter> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return _context.Costcenters.FirstOrDefault(x => x.CostcenterId == id);
         }
 
-        public Task<int> UpdateAsync(int id, Costcenter costcenter)
+        public async Task<int> UpdateAsync(int id, Costcenter costcenter)
         {
-            throw new NotImplementedException();
+            var costcenterToUpdate = await _context.Costcenters.FirstOrDefaultAsync(x => x.CostcenterId == id);
+            if (costcenterToUpdate != null)
+            {
+                costcenterToUpdate.Costcenternumber = costcenter.Costcenternumber;
+                costcenterToUpdate.Description = costcenter.Description;
+                costcenterToUpdate.ProjectmanagerId = costcenter.ProjectmanagerId;                
+                return await _context.SaveChangesAsync();
+            }
+            return 0;
         }
     }
 }

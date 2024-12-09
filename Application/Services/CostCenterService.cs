@@ -36,9 +36,13 @@ namespace Application.Services
             return _costCenterMapper.ToResponse(createdCostCenter);
         }
 
-        public Task<int> DeleteAsync(int id)
+        public async Task<int> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            if (id == null || id < 1)
+            {
+                throw new CostCenterException("CostCenter id is required");
+            }
+            return await _costCenterRepository.DeleteAsync(id);
         }
 
         public async Task<List<CostCenterRes>> GetAllAsync()
@@ -46,14 +50,31 @@ namespace Application.Services
             return (await _costCenterRepository.GetAllAsync()).Select(_costCenterMapper.ToResponse).ToList();
         }
 
-        public Task<CostCenterRes> GetByIdAsync(int id)
+        public async Task<CostCenterRes> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            if (id == null || id < 1) {
+                throw new CostCenterException("CostCenter id is required");
+            }
+            return _costCenterMapper.ToResponse(await _costCenterRepository.GetByIdAsync(id));
         }
 
-        public Task<int> UpdateAsync(int id, CostCenterReq costCenterReq)
+        public async Task<int> UpdateAsync(int id, CostCenterReq costCenterReq)
         {
-            throw new NotImplementedException();
+            if (id == null || id < 1)
+            {
+                throw new CostCenterException("CostCenter id is required");
+            }
+            if (costCenterReq == null ||
+                costCenterReq.Costcenternumber.Equals("") ||
+                costCenterReq.ProjectmanagerId.Equals("") ||
+                costCenterReq.Description.Equals("") ||
+                costCenterReq.Costcenternumber <= 0
+                )
+            {
+                throw new CostCenterException("CostCenter number, project manager id and description are required");
+            }
+            var costCenter = _costCenterMapper.ToEntity(costCenterReq);
+            return await _costCenterRepository.UpdateAsync(id, costCenter);
         }
     }
 }
