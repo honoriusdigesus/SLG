@@ -34,6 +34,10 @@ builder.Services.AddScoped<ICostCenterRepository, CostCenterRepository>();
 builder.Services.AddScoped<ICostCenterService, CostCenterService>();
 builder.Services.AddScoped<CostCenterMapper>();
 
+builder.Services.AddScoped<ICreditCardRepository, CreditCardRepository>();
+builder.Services.AddScoped<ICreditCardService, CreditCardService>();
+builder.Services.AddScoped<CreditCardMapper>();
+
 
 builder.Services.AddScoped<MyValidator>();
 builder.Services.AddScoped<UtilsJwt>();

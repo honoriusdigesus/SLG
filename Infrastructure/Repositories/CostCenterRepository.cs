@@ -39,7 +39,7 @@ namespace Infrastructure.Repositories
 
         public async Task<Costcenter> GetByIdAsync(int id)
         {
-            return _context.Costcenters.FirstOrDefault(x => x.CostcenterId == id);
+            return await _context.Costcenters.FirstOrDefaultAsync(x => x.CostcenterId == id);
         }
 
         public async Task<int> UpdateAsync(int id, Costcenter costcenter)

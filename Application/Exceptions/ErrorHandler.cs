@@ -21,7 +21,8 @@ namespace Application.Exceptions
         {
                 { typeof(ZoneException), (HttpStatusCode.NotFound, new ErrorResponse("Z101", "ZONE INVALID", null)) },
                 { typeof(EmployeeException), (HttpStatusCode.NotFound, new ErrorResponse("E101", "EMPLOYEE INVALID", null)) },
-                { typeof(CostCenterException), (HttpStatusCode.NotFound, new ErrorResponse("CC101", "EMPLOYEE INVALID", null)) }
+                { typeof(CostCenterException), (HttpStatusCode.NotFound, new ErrorResponse("CC101", "COST CENTER INVALID", null)) },
+                { typeof(CredirCardException), (HttpStatusCode.NotFound, new ErrorResponse("TC101", "CREDIT CARD INVALID", null)) },
 
         };
         }
@@ -36,7 +37,7 @@ namespace Application.Exceptions
             }
             else
             {
-                ErrorResponse genericErrorResponse = new ErrorResponse("ERROR HANDLER 500", "INTERNAL_SERVER_ERROR", "An unexpected error occurred.");
+                ErrorResponse genericErrorResponse = new ErrorResponse("ERROR DEFAULT", "Error handler", context.Exception.Message);
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 context.Result = new JsonResult(genericErrorResponse);
             }
