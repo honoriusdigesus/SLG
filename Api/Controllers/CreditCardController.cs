@@ -23,5 +23,13 @@ namespace Api.Controllers
             var createdCreditCard = await _creditCardService.CreateAsync(creditCard);
             return Ok(createdCreditCard);
         }
+
+        [HttpGet]
+        [Route("GetAll")]
+        public async Task<IActionResult> GetAllAsync()
+        {
+            var creditCards = await _creditCardService.GetAllAsync();
+            return Ok(creditCards);
+        }
     }
 }

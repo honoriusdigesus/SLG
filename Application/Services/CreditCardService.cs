@@ -36,9 +36,9 @@ namespace Application.Services
             throw new NotImplementedException();
         }
 
-        public Task<List<CreditCardRes>> GetAllAsync()
+        public async Task<List<CreditCardRes>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return (await _creditCardRepository.GetAllAsync()).Select(_creditCardMapper.ToResponse).ToList();
         }
 
         public Task<CreditCardRes> GetByIdAsync(int id)

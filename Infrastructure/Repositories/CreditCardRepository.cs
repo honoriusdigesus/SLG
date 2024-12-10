@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Domain.Entities;
 using Domain.Interfaces;
 using Infrastructure.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
@@ -30,9 +31,9 @@ namespace Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<List<Creditcard>> GetAllAsync()
+        public async Task<List<Creditcard>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Creditcards.ToListAsync();
         }
 
         public Task<Creditcard> GetByIdAsync(int id)
