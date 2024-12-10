@@ -31,5 +31,13 @@ namespace Api.Controllers
             var creditCards = await _creditCardService.GetAllAsync();
             return Ok(creditCards);
         }
+
+        [HttpGet]
+        [Route("GetById")]
+        public async Task<IActionResult> GetByIdAsync(int id)
+        {
+            var creditCard = await _creditCardService.GetByIdAsync(id);
+            return Ok(creditCard);
+        }
     }
 }

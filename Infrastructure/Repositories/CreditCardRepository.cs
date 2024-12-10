@@ -36,9 +36,9 @@ namespace Infrastructure.Repositories
             return await _context.Creditcards.ToListAsync();
         }
 
-        public Task<Creditcard> GetByIdAsync(int id)
+        public async Task<Creditcard> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Creditcards.FirstAsync(x => x.CreditcardId == id);
         }
 
         public Task<int> UpdateAsync(int id, Creditcard creditcard)

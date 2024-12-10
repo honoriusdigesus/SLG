@@ -41,9 +41,17 @@ namespace Application.Services
             return (await _creditCardRepository.GetAllAsync()).Select(_creditCardMapper.ToResponse).ToList();
         }
 
-        public Task<CreditCardRes> GetByIdAsync(int id)
+        public async Task<CreditCardRes> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            if (id < 1 || id==null) {
+                throw new CredirCardException("CreditCard id is required");
+            }
+            var creditCard = await _creditCardRepository.GetByIdAsync(id);
+            if (creditCard == null)
+            {
+                throw new CredirCardException("CreditCard not found");
+            }
+            return _creditCardMapper.ToResponse(creditCard);
         }
 
         public Task<int> UpdateAsync(int id, CreditCardReq creditCard)
