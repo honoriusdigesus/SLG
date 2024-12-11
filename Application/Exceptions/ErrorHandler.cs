@@ -23,7 +23,7 @@ namespace Application.Exceptions
                 { typeof(EmployeeException), (HttpStatusCode.NotFound, new ErrorResponse("E101", "EMPLOYEE INVALID", null)) },
                 { typeof(CostCenterException), (HttpStatusCode.NotFound, new ErrorResponse("CC101", "COST CENTER INVALID", null)) },
                 { typeof(CredirCardException), (HttpStatusCode.NotFound, new ErrorResponse("TC101", "CREDIT CARD INVALID", null)) },
-
+                { typeof(CategoryException), (HttpStatusCode.NotFound, new ErrorResponse("TC101", "CREDIT CARD INVALID", null)) },
         };
         }
 
@@ -41,7 +41,6 @@ namespace Application.Exceptions
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 context.Result = new JsonResult(genericErrorResponse);
             }
-
             base.OnException(context);
         }
 

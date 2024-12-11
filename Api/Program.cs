@@ -38,6 +38,10 @@ builder.Services.AddScoped<ICreditCardRepository, CreditCardRepository>();
 builder.Services.AddScoped<ICreditCardService, CreditCardService>();
 builder.Services.AddScoped<CreditCardMapper>();
 
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<CategoryMapper>();
+
 
 builder.Services.AddScoped<MyValidator>();
 builder.Services.AddScoped<UtilsJwt>();
