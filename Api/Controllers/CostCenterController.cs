@@ -17,7 +17,7 @@ namespace Api.Controllers
         }
 
         [HttpPost]
-        [Route("create")]
+        [Route("Create")]
         public async Task<IActionResult> CreateAsync([FromBody] CostCenterReq costCenterReq)
         {
             var costCenter = await _costCenterService.CreateAsync(costCenterReq);

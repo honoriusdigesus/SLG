@@ -28,22 +28,27 @@ namespace Application.Services
             }
             var categoryEntity = _categoryMapper.ToCategory(category);
             var result = await _categoryRepository.CreateAsync(categoryEntity);
-            return _categoryMapper.ToCategoryRes(result);
+            return _categoryMapper.ToResponse(result);
         }
 
-        public Task<int> DeleteAsync(int id)
+        public async Task<int> DeleteAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<CategoryRes>> GetAllAsync()
+        public async Task<List<CategoryRes>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return (await _categoryRepository.GetAllAsync()).Select(_categoryMapper.ToResponse).ToList();
         }
 
-        public Task<CategoryRes> GetByIdAsync(int id)
+        public async Task<CategoryRes> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            if (id <= 0)
+            {
+                throw new CategoryException("Category id is required");
+            }
+            var result = await _categoryRepository.GetByIdAsync(id);
+            return _categoryMapper.ToResponse(result);
         }
 
         public Task<int> UpdateAsync(int id, CategoryReq category)

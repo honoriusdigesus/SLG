@@ -35,14 +35,19 @@ namespace Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<List<Category>> GetAllAsync()
+        public async Task<List<Category>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await Task.FromResult(_context.Categories.ToList());
         }
 
-        public Task<Category> GetByIdAsync(int id)
+        public async Task<Category> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var categoryFound = await _context.Categories.FindAsync(id);
+            if (categoryFound == null)
+            {
+                throw new CategoryException($"Category not found by ID: {id}");
+            }
+            return categoryFound;
         }
 
         public Task<int> UpdateAsync(int id, Category category)

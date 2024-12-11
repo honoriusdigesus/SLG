@@ -21,7 +21,7 @@ namespace Application.Mappers
         }
 
         //From Category to CategoryRes
-        public CategoryRes ToCategoryRes(Category category)
+        public CategoryRes ToResponse(Category category)
         {
             return new CategoryRes
             {
