@@ -39,5 +39,22 @@ namespace Api.Controllers
             var creditCard = await _creditCardService.GetByIdAsync(id);
             return Ok(creditCard);
         }
+
+        [HttpDelete]
+        [Route("Delete/{id}")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            var deletedCreditCard = await _creditCardService.DeleteAsync(id);
+            return Ok(deletedCreditCard);
+        }
+
+        [HttpPut]
+        [Route("Update/{id}")]
+        public async Task<IActionResult> UpdateAsync(int id, CreditCardReq creditCard)
+        {
+            var updatedCreditCard = await _creditCardService.UpdateAsync(id, creditCard);
+            return Ok(updatedCreditCard);
+        }
+
     }
 }

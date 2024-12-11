@@ -39,8 +39,11 @@ namespace Application.Services
 
         public async Task<int> DeleteAsync(int id)
         {
-            var zone = await _zoneRepository.GetByIdAsync(id) ?? throw new ZoneException($"Zone with ID {id} was not found.");
-            return await _zoneRepository.DeleteAsync(zone.ZoneId);
+            if (id <= 0)
+            {
+                throw new ZoneException("Zone ID is required");
+            }
+            return await _zoneRepository.DeleteAsync(id);
         }
 
         public async Task<List<ZoneRes>> GetAllAsync()

@@ -31,9 +31,12 @@ namespace Application.Services
             return _creditCardMapper.ToResponse(createdCreditCard);
         }
 
-        public Task<int> DeleteAsync(int id)
+        public async Task<int> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            if (id <= 0) {
+                throw new CredirCardException("CreditCard id is required");
+            }
+            return await _creditCardRepository.DeleteAsync(id);
         }
 
         public async Task<List<CreditCardRes>> GetAllAsync()
@@ -54,9 +57,14 @@ namespace Application.Services
             return _creditCardMapper.ToResponse(creditCard);
         }
 
-        public Task<int> UpdateAsync(int id, CreditCardReq creditCard)
+        public async Task<int> UpdateAsync(int id, CreditCardReq creditCard)
         {
-            throw new NotImplementedException();
+           if (id <= 0 || creditCard == null || creditCard.Cardnumber.Equals("") || creditCard.EmployeeId == null)
+            {
+                //Verifica la información
+                throw new CredirCardException("CreditCard id is required");
+            }
+            return await _creditCardRepository.UpdateAsync(id, _creditCardMapper.ToEntity(creditCard));
         }
     }
 }

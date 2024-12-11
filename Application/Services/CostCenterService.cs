@@ -38,7 +38,7 @@ namespace Application.Services
 
         public async Task<int> DeleteAsync(int id)
         {
-            if (id == null || id < 1)
+            if (id == null || id <= 0)
             {
                 throw new CostCenterException("CostCenter id is required");
             }

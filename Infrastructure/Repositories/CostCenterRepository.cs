@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Exceptions.Types;
 using Domain.Entities;
 using Domain.Interfaces;
 using Infrastructure.Data.Models;
@@ -20,14 +21,23 @@ namespace Infrastructure.Repositories
         }
         public async Task<Costcenter> CreateAsync(Costcenter costcenter)
         {
-            await _context.Costcenters.AddAsync(costcenter);
+            //Save the Costcenter to the database or throw an exception if the Costcenter not saved
+            var createdCostcenter = await _context.Costcenters.AddAsync(costcenter);
+            if (createdCostcenter == null)
+            {
+                throw new CostCenterException("Costcenter not saved");
+            }
             await _context.SaveChangesAsync();
-            return costcenter;
+            return createdCostcenter.Entity;
         }
 
         public async Task<int> DeleteAsync(int id)
         {
             var costcenter = await _context.Costcenters.FirstOrDefaultAsync(x => x.CostcenterId == id);
+            if (costcenter == null)
+            {
+                throw new CostCenterException("Costcenter not found");
+            }
             _context.Costcenters.Remove(costcenter);
             return await _context.SaveChangesAsync();
         }
@@ -39,20 +49,25 @@ namespace Infrastructure.Repositories
 
         public async Task<Costcenter> GetByIdAsync(int id)
         {
-            return await _context.Costcenters.FirstOrDefaultAsync(x => x.CostcenterId == id);
+            var costcenter = await _context.Costcenters.FirstOrDefaultAsync(x => x.CostcenterId == id);
+            if (costcenter == null)
+            {
+                throw new CostCenterException("Costcenter not found");
+            }
+            return costcenter;
         }
 
         public async Task<int> UpdateAsync(int id, Costcenter costcenter)
         {
             var costcenterToUpdate = await _context.Costcenters.FirstOrDefaultAsync(x => x.CostcenterId == id);
-            if (costcenterToUpdate != null)
+            if (costcenterToUpdate == null)
             {
-                costcenterToUpdate.Costcenternumber = costcenter.Costcenternumber;
-                costcenterToUpdate.Description = costcenter.Description;
-                costcenterToUpdate.ProjectmanagerId = costcenter.ProjectmanagerId;                
-                return await _context.SaveChangesAsync();
+                throw new CostCenterException("Costcenter not found");
             }
-            return 0;
+            costcenterToUpdate.Costcenternumber = costcenter.Costcenternumber;
+            costcenterToUpdate.Description = costcenter.Description;
+            costcenterToUpdate.ProjectmanagerId = costcenter.ProjectmanagerId;
+            return await _context.SaveChangesAsync();
         }
     }
 }

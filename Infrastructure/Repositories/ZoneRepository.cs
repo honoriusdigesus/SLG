@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Exceptions.Types;
 using Domain.Entities;
 using Domain.Interfaces;
 using Infrastructure.Data;
@@ -22,14 +23,23 @@ namespace Infrastructure.Repositories
 
         public async Task<Zone> CreateAsync(Zone zone)
         {
-            await _context.Zones.AddAsync(zone);
+            //Save the zone to the database or throw an exception if the zone not saved
+            var createdZone = await _context.Zones.AddAsync(zone);
+            if (createdZone == null)
+            {
+                throw new ZoneException("Zone not saved");
+            }
             await _context.SaveChangesAsync();
-            return zone;
+            return createdZone.Entity;
         }
 
         public async Task<int> DeleteAsync(int id)
         {
             var zone = await _context.Zones.FirstOrDefaultAsync(x => x.ZoneId == id);
+            if (zone == null)
+            {
+                throw new ZoneException("Zone not found");
+            }
             _context.Zones.Remove(zone);
             return await _context.SaveChangesAsync();
         }
@@ -41,12 +51,21 @@ namespace Infrastructure.Repositories
 
         public Task<Zone> GetByIdAsync(int id)
         {
-            return _context.Zones.FirstOrDefaultAsync(x => x.ZoneId == id);
+            var zone = _context.Zones.FirstOrDefaultAsync(x => x.ZoneId == id);
+            if (zone == null)
+            {
+                throw new ZoneException("Zone not found");
+            }
+            return zone;
         }
 
         public async Task<int> UpdateAsync(int id, Zone zone)
         {
             var zoneToUpdate = await _context.Zones.FirstOrDefaultAsync(x => x.ZoneId == id);
+            if(zoneToUpdate == null)
+            {
+                throw new ZoneException("Zone not found");
+            }
             zoneToUpdate.Zonename = zone.Zonename;
             zoneToUpdate.Description = zone.Description;
             return await _context.SaveChangesAsync();

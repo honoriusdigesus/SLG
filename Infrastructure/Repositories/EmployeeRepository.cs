@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Exceptions.Types;
 using Domain.Entities;
 using Domain.Interfaces;
 using Infrastructure.Data;
@@ -22,14 +23,24 @@ namespace Infrastructure.Repositories
         }
         public async Task<Employee> CreateAsync(Employee employee)
         {
-            await _context.Employees.AddAsync(employee);
+            //Save the Employee to the database or throw an exception if the Employee not saved
+            var createdEmployee = await _context.Employees.AddAsync(employee);
+            if (createdEmployee == null)
+            {
+                throw new EmployeeException("Employee not saved");
+            }
             await _context.SaveChangesAsync();
-            return employee;
+            return createdEmployee.Entity;
+
         }
 
         public async Task<int> DeleteAsync(int id)
         {
             var employee = await _context.Employees.FirstOrDefaultAsync(x => x.EmployeeId == id);
+            if (employee == null)
+            {
+                throw new EmployeeException("Employee not found");
+            }
             _context.Employees.Remove(employee);
             return await _context.SaveChangesAsync();
         }
@@ -41,23 +52,29 @@ namespace Infrastructure.Repositories
 
         public async Task<Employee> GetByIdAsync(int id)
         {
-            return await _context.Employees.FirstOrDefaultAsync(x => x.EmployeeId == id);
+            var employee = await _context.Employees.FirstOrDefaultAsync(x => x.EmployeeId == id);
+            if (employee == null)
+            {
+                throw new EmployeeException("Employee not found");
+            }
+            return employee;
         }
 
         public Task<int> UpdateAsync(int id, Employee employee)
         {
             var employeeToUpdate = _context.Employees.FirstOrDefault(x => x.EmployeeId == id);
-            if (employeeToUpdate != null) {
-                employeeToUpdate.Document = employee.Document;
-                employeeToUpdate.Name = employee.Name;
-                employeeToUpdate.Lastname = employee.Lastname;
-                employeeToUpdate.Email = employee.Email;
-                employeeToUpdate.Password = employee.Password;
-                employeeToUpdate.Role = employee.Role;
-                employeeToUpdate.Phone = employee.Phone;
-                employeeToUpdate.ZoneId = employee.ZoneId;
-                _context.Employees.Update(employeeToUpdate);
+            if (employeeToUpdate == null) {
+                throw new EmployeeException("Employee not found");
             }
+            employeeToUpdate.Document = employee.Document;
+            employeeToUpdate.Name = employee.Name;
+            employeeToUpdate.Lastname = employee.Lastname;
+            employeeToUpdate.Email = employee.Email;
+            employeeToUpdate.Password = employee.Password;
+            employeeToUpdate.Role = employee.Role;
+            employeeToUpdate.Phone = employee.Phone;
+            employeeToUpdate.ZoneId = employee.ZoneId;
+            _context.Employees.Update(employeeToUpdate);
             return _context.SaveChangesAsync();
         }
     }
