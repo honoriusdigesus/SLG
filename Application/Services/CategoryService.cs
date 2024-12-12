@@ -56,9 +56,19 @@ namespace Application.Services
             return _categoryMapper.ToResponse(result);
         }
 
-        public Task<int> UpdateAsync(int id, CategoryReq category)
+        public async Task<int> UpdateAsync(int id, CategoryReq category)
         {
-            throw new NotImplementedException();
+            if (id <= 0)
+            {
+                throw new CategoryException("The Id must be greater than 0");
+            }
+            if (category == null || category.Name.Equals(""))
+            {
+                throw new CategoryException("Category name is required");
+            }
+            var categoryEntity = _categoryMapper.ToCategory(category);
+            var result = await _categoryRepository.UpdateAsync(id, categoryEntity);
+            return result;
         }
     }
 }

@@ -47,5 +47,13 @@ namespace Api.Controllers
             var result = await _categoryService.DeleteAsync(id);
             return Ok(result);
         }
+
+        [HttpPut]
+        [Route("Update/{id}")]
+        public async Task<IActionResult> UpdateAsync(int id, [FromBody] CategoryReq category)
+        {
+            var result = await _categoryService.UpdateAsync(id, category);
+            return Ok(result);
+        }
     }
 }

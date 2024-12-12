@@ -56,9 +56,16 @@ namespace Infrastructure.Repositories
             return categoryFound;
         }
 
-        public Task<int> UpdateAsync(int id, Category category)
+        public async Task<int> UpdateAsync(int id, Category category)
         {
-            throw new NotImplementedException();
+            var categoryFound = await _context.Categories.FindAsync(id);
+            if (categoryFound == null)
+            {
+                throw new CategoryException($"Category not found by ID: {id}");
+            }
+            categoryFound.Name = category.Name;
+            categoryFound.Description = category.Description;
+            return await _context.SaveChangesAsync();
         }
     }
 }
