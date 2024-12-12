@@ -23,7 +23,6 @@ namespace Infrastructure.Repositories
 
         public async Task<Zone> CreateAsync(Zone zone)
         {
-            //Save the zone to the database or throw an exception if the zone not saved
             var createdZone = await _context.Zones.AddAsync(zone);
             if (createdZone == null)
             {
@@ -49,9 +48,9 @@ namespace Infrastructure.Repositories
             return await _context.Zones.ToListAsync();
         }
 
-        public Task<Zone> GetByIdAsync(int id)
+        public async Task<Zone> GetByIdAsync(int id)
         {
-            var zone = _context.Zones.FirstOrDefaultAsync(x => x.ZoneId == id);
+            var zone = await _context.Zones.FirstOrDefaultAsync(x => x.ZoneId == id);
             if (zone == null)
             {
                 throw new ZoneException("Zone not found");

@@ -33,7 +33,12 @@ namespace Application.Services
 
         public async Task<int> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            if (id <= 0)
+            {
+                throw new CategoryException("The Id must be greater than 0");
+            }
+            var result = await _categoryRepository.DeleteAsync(id);
+            return result;
         }
 
         public async Task<List<CategoryRes>> GetAllAsync()
@@ -45,7 +50,7 @@ namespace Application.Services
         {
             if (id <= 0)
             {
-                throw new CategoryException("Category id is required");
+                throw new CategoryException("The Id must be greater than 0");
             }
             var result = await _categoryRepository.GetByIdAsync(id);
             return _categoryMapper.ToResponse(result);

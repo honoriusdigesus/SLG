@@ -39,5 +39,13 @@ namespace Api.Controllers
             var result = await _categoryService.GetByIdAsync(id);
             return Ok(result);
         }
+
+        [HttpDelete]
+        [Route("Delete/{id}")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            var result = await _categoryService.DeleteAsync(id);
+            return Ok(result);
+        }
     }
 }

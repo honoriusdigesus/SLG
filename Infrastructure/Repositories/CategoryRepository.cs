@@ -30,9 +30,15 @@ namespace Infrastructure.Repositories
             return createdCategory.Entity;
         }
 
-        public Task<int> DeleteAsync(int id)
+        public async Task<int> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var category = await _context.Categories.FindAsync(id);
+            if (category == null)
+            {
+                throw new CategoryException("Category not found");
+            }
+            _context.Categories.Remove(category);
+            return await _context.SaveChangesAsync();
         }
 
         public async Task<List<Category>> GetAllAsync()
