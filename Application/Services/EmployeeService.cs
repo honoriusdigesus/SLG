@@ -10,6 +10,7 @@ using Application.Utils;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing.Template;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services
 {
@@ -71,7 +72,26 @@ namespace Application.Services
             return _employeeMapper.ToResponse(await _employeeRepository.GetByIdAsync(id));
         }
 
-        public Task<IActionResult> GetEmployeeByDocumentAndPassword(string document, string password)
+        public Task<int> UpdateAsync(int id, EmployeeReq employee)
+        {
+            if (_validator.IsValidEmail(employee.Email) && !employee.Password.Equals("") && id > 0)
+            {
+                employee.Password = _utilsJwt.EncryptPassword(employee.Password);
+                var result = _employeeRepository.UpdateAsync(id, _employeeMapper.ToEntity(employee));
+                if (result.Result == 0)
+                {
+                    throw new EmployeeException("Employee not found, please verify your information.");
+                }
+
+                return _employeeRepository.UpdateAsync(id, _employeeMapper.ToEntity(employee));
+            }
+            else
+            {
+                throw new EmployeeException("Incorrect employee information, please verify.");
+            }
+        }
+
+        public Task<IActionResult> Login(string document, string password)
         {
             var passwordHash = _utilsJwt.EncryptPassword(password);
             var employee = _employeeRepository.GetEmployeeByDocumentAndPassword(document, passwordHash);
@@ -86,46 +106,26 @@ namespace Application.Services
             return Task.FromResult(new OkObjectResult(new { userResult, token, refreh = refreshToken.Refreshtoken }) as IActionResult);
         }
 
-        public Task<int> UpdateAsync(int id, EmployeeReq employee)
+        //Refresh token
+        public async Task<IActionResult> RefreshToken(string token)
         {
-            if (_validator.IsValidEmail(employee.Email) && !employee.Password.Equals("") && id>0)
+            var tokenEntity = await _tokenRepository.GetByRefreshToken(token);
+            if (tokenEntity == null || tokenEntity.Expires < DateTime.Now || tokenEntity.Revoked != null)
             {
-                employee.Password = _utilsJwt.EncryptPassword(employee.Password);
-                var result= _employeeRepository.UpdateAsync(id, _employeeMapper.ToEntity(employee));
-                if (result.Result == 0)
-                {
-                    throw new EmployeeException("Employee not found, please verify your information.");
-                }
-
-                return _employeeRepository.UpdateAsync(id, _employeeMapper.ToEntity(employee));
+                throw new TokenException("Token no válido");
             }
-            else
-            {
-                throw new EmployeeException("Incorrect employee information, please verify.");
-            }
-        }
-
-
-        /*
-        public Task<IActionResult> Login(string document, string password)
-        {
-            if (document.Equals("") || password.Equals(""))
-            {
-                throw new EmployeeException("Incorrect employee document, please verify.");
-            }
-            var passwordHash = _utilsJwt.EncryptPassword(password);
-            var employee = _employeeRepository.GetEmployeeByDocumentAndPassword(document, passwordHash);
+            var employeeId = tokenEntity.EmployeeId;
+            var employee = await _employeeRepository.GetByIdAsync((int)employeeId);
             if (employee == null)
             {
-                throw new EmployeeException("Employee not found, please verify your information.");
+                throw new TokenException("El empleado no está registrado");
             }
-            var token = _utilsJwt.GenerateJwtToken(_employeeMapper.ToResponse(employee.Result));
-            var refreshToken = _utilsJwt.GenerateRefreshToken(_employeeMapper.ToResponse(employee.Result));
-
-            var userResult = _employeeMapper.ToResponse(employee.Result);
-            return Task.FromResult(new OkObjectResult(new { userResult, token, refreh = refreshToken.Token1 }) as IActionResult);
+            var newToken = _utilsJwt.GenerateJwtToken(_employeeMapper.ToResponse(employee));
+            var newRefreshToken = _utilsJwt.GenerateRefreshToken((int)employeeId);
+            tokenEntity.Revoked = DateTime.Now;
+            await _tokenRepository.CreateAsync(newRefreshToken);
+            return new OkObjectResult(new { token = newToken, refreshToken = newRefreshToken.Refreshtoken });
         }
-        */
 
     }
 }

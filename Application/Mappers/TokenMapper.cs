@@ -32,8 +32,8 @@ namespace Application.Mappers
                 Token1 = login.Refreshtoken,
                 Expires = login.Expires,
                 Created = login.Created,
-                Revoked = login.Revoked,
-                EmployeeId = login.EmployeeId
+                Revoked = (DateTime)login.Revoked,
+                EmployeeId = (int)login.EmployeeId
             };
         }
     }

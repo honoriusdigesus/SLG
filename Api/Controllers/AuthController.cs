@@ -21,7 +21,14 @@ namespace Api.Controllers
         [Route("Login")]
         public async Task<IActionResult> LoginAsync([FromBody] UserLogin userLogin)
         {
-            return Ok(await _employeeServices.GetEmployeeByDocumentAndPassword(userLogin.Document, userLogin.Password));
+            return Ok(await _employeeServices.Login(userLogin.Document, userLogin.Password));
+        }
+
+        [HttpPost]
+        [Route("Refresh")]
+        public async Task<IActionResult> RefreshTokenAsync([FromBody] string token)
+        {
+            return Ok(await _employeeServices.RefreshToken(token));
         }
     }
 }

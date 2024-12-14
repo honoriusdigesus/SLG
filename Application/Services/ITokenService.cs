@@ -11,5 +11,6 @@ namespace Application.Services
     public interface ITokenService
     {
         Task<TokenRes> CreateAsync(TokenReq tokenRed);
+        Task<TokenRes> RefreshToken(string token);
     }
 }

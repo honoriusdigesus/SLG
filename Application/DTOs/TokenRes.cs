@@ -15,8 +15,8 @@ namespace Application.DTOs
 
         public DateTime Created { get; set; }
 
-        public DateTime? Revoked { get; set; }
+        public DateTime Revoked { get; set; }
 
-        public int? EmployeeId { get; set; }
+        public int EmployeeId { get; set; }
     }
 }

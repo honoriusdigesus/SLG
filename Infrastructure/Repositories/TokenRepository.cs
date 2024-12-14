@@ -2,6 +2,7 @@
 using Domain.Entities;
 using Domain.Interfaces;
 using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
@@ -24,6 +25,16 @@ namespace Infrastructure.Repositories
             }
             await _context.SaveChangesAsync();
             return createdToken.Entity;
+        }
+
+        public async Task<Login> GetByRefreshToken(string token)
+        {
+            //Get by refreshToke
+            var tokenEntity = await _context.Logins.FirstOrDefaultAsync(x => x.Refreshtoken == token);
+            if (tokenEntity == null) {
+                throw new TokenException("Token not found");
+            }
+            return tokenEntity;
         }
     }
 }
