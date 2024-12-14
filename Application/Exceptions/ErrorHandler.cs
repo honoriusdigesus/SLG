@@ -24,6 +24,7 @@ namespace Application.Exceptions
                 { typeof(CostCenterException), (HttpStatusCode.NotFound, new ErrorResponse("CC101", "COST CENTER INVALID", null)) },
                 { typeof(CredirCardException), (HttpStatusCode.NotFound, new ErrorResponse("TC101", "CREDIT CARD INVALID", null)) },
                 { typeof(CategoryException), (HttpStatusCode.NotFound, new ErrorResponse("TC101", "CATEGORY INVALID", null)) },
+                { typeof(TokenException), (HttpStatusCode.NotFound, new ErrorResponse("TO101", "CATEGORY INVALID", null)) },
         };
         }
 

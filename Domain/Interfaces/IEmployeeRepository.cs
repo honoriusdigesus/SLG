@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Entities;
+﻿using Domain.Entities;
 
 namespace Domain.Interfaces
 {
@@ -14,5 +9,6 @@ namespace Domain.Interfaces
         Task<Employee> CreateAsync(Employee employee);
         Task<int> UpdateAsync(int id, Employee employee);
         Task<int> DeleteAsync(int id);
+        Task<Employee> GetEmployeeByDocumentAndPassword(string document, string password);
     }
 }

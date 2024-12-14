@@ -9,9 +9,9 @@ namespace Api.Controllers
     [ApiController]
     public class ZoneController : ControllerBase
     {
-        private readonly IZoneServices _zoneServices;
+        private readonly IZoneService _zoneServices;
 
-        public ZoneController(IZoneServices zoneServices)
+        public ZoneController(IZoneService zoneServices)
         {
             _zoneServices = zoneServices;
         }

@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
+using Application.DTOs;
+using Domain.Entities;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Application.Utils
 {
@@ -31,5 +32,45 @@ namespace Application.Utils
                 return builder.ToString();
             }
         }
+        //Generate the token based on the EmployeeReq
+        public string GenerateJwtToken(EmployeeRes employee)
+        {
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]!));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, employee.Name),
+                new Claim(ClaimTypes.Email, employee.Email),
+                new Claim(ClaimTypes.Role, employee.Role)
+            };
+
+            var token = new JwtSecurityToken(
+                _configuration["JWT:ValidIssuer"],
+                _configuration["JWT:ValidAudience"],
+                claims,
+                expires: DateTime.Now.AddMinutes(Convert.ToInt32(_configuration["JWT:ExpiryMinutes"])),
+                signingCredentials: credentials
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        //Refresh token
+        public Login GenerateRefreshToken(int employeeId)
+        {
+            var refreshToken = new Login
+            {
+                Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
+                Expires = DateTime.Now.AddHours(12),
+                Created = DateTime.Now,
+                EmployeeId = employeeId
+            };
+
+            return refreshToken;
+        }
+
     }
 }
+
+

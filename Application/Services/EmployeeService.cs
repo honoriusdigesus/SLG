@@ -8,6 +8,7 @@ using Application.Exceptions.Types;
 using Application.Mappers;
 using Application.Utils;
 using Domain.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Application.Services
 {
@@ -18,7 +19,12 @@ namespace Application.Services
         private readonly MyValidator _validator;
         private readonly UtilsJwt _utilsJwt;
 
-        public EmployeeService(IEmployeeRepository employeeRepository, EmployeeMapper employeeMapper, MyValidator myValidator, UtilsJwt utilsJwt)
+        public EmployeeService(
+            IEmployeeRepository employeeRepository, 
+            EmployeeMapper employeeMapper, 
+            MyValidator myValidator, 
+            UtilsJwt utilsJwt
+            )
         {
             _employeeRepository = employeeRepository;
             _employeeMapper = employeeMapper;
@@ -61,6 +67,7 @@ namespace Application.Services
             return _employeeMapper.ToResponse(await _employeeRepository.GetByIdAsync(id));
         }
 
+
         public Task<int> UpdateAsync(int id, EmployeeReq employee)
         {
             if (_validator.IsValidEmail(employee.Email) && !employee.Password.Equals("") && id>0)
@@ -79,5 +86,28 @@ namespace Application.Services
                 throw new EmployeeException("Incorrect employee information, please verify.");
             }
         }
+
+
+        /*
+        public Task<IActionResult> Login(string document, string password)
+        {
+            if (document.Equals("") || password.Equals(""))
+            {
+                throw new EmployeeException("Incorrect employee document, please verify.");
+            }
+            var passwordHash = _utilsJwt.EncryptPassword(password);
+            var employee = _employeeRepository.GetEmployeeByDocumentAndPassword(document, passwordHash);
+            if (employee == null)
+            {
+                throw new EmployeeException("Employee not found, please verify your information.");
+            }
+            var token = _utilsJwt.GenerateJwtToken(_employeeMapper.ToResponse(employee.Result));
+            var refreshToken = _utilsJwt.GenerateRefreshToken(_employeeMapper.ToResponse(employee.Result));
+
+            var userResult = _employeeMapper.ToResponse(employee.Result);
+            return Task.FromResult(new OkObjectResult(new { userResult, token, refreh = refreshToken.Token1 }) as IActionResult);
+        }
+        */
+
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Data.Models;
+namespace Infrastructure.Data;
 
 public partial class SlgDbContext : DbContext
 {
@@ -27,6 +27,8 @@ public partial class SlgDbContext : DbContext
     public virtual DbSet<Employee> Employees { get; set; }
 
     public virtual DbSet<Expense> Expenses { get; set; }
+
+    public virtual DbSet<Login> Logins { get; set; }
 
     public virtual DbSet<Zone> Zones { get; set; }
 
@@ -204,6 +206,34 @@ public partial class SlgDbContext : DbContext
             entity.HasOne(d => d.Category).WithMany(p => p.Expenses)
                 .HasForeignKey(d => d.CategoryId)
                 .HasConstraintName("expense_category_id_fkey");
+        });
+
+        modelBuilder.Entity<Login>(entity =>
+        {
+            entity.HasKey(e => e.TokenId).HasName("token_pkey");
+
+            entity.ToTable("login");
+
+            entity.Property(e => e.TokenId)
+                .HasDefaultValueSql("nextval('token_token_id_seq'::regclass)")
+                .HasColumnName("token_id");
+            entity.Property(e => e.Created)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("created");
+            entity.Property(e => e.EmployeeId).HasColumnName("employee_id");
+            entity.Property(e => e.Expires)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("expires");
+            entity.Property(e => e.Revoked)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("revoked");
+            entity.Property(e => e.Token)
+                .HasMaxLength(255)
+                .HasColumnName("token");
+
+            entity.HasOne(d => d.Employee).WithMany(p => p.Logins)
+                .HasForeignKey(d => d.EmployeeId)
+                .HasConstraintName("token_employee_id_fkey");
         });
 
         modelBuilder.Entity<Zone>(entity =>

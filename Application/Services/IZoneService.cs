@@ -8,7 +8,7 @@ using Domain.Entities;
 
 namespace Application.Services
 {
-    public interface IZoneServices
+    public interface IZoneService
     {
         Task<List<ZoneRes>> GetAllAsync();
         Task<ZoneRes> GetByIdAsync(int id);

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Domain.Entities;
+﻿namespace Domain.Entities;
 
 public partial class Employee
 {
@@ -30,6 +27,8 @@ public partial class Employee
     public virtual ICollection<Costcenter> Costcenters { get; set; } = new List<Costcenter>();
 
     public virtual Creditcard? Creditcard { get; set; }
+
+    public virtual ICollection<Login> Logins { get; set; } = new List<Login>();
 
     public virtual Zone? Zone { get; set; }
 }

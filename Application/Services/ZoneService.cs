@@ -12,7 +12,7 @@ using Domain.Interfaces;
 
 namespace Application.Services
 {
-    public class ZoneService : IZoneServices
+    public class ZoneService : IZoneService
     {
         private readonly IZoneRepository _zoneRepository;
         private readonly ZoneMapper _zoneMapper;

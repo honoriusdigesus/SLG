@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Application.Exceptions.Types;
+﻿using Application.Exceptions.Types;
 using Domain.Entities;
 using Domain.Interfaces;
 using Infrastructure.Data;
-using Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
@@ -48,6 +42,20 @@ namespace Infrastructure.Repositories
         public async Task<List<Employee>> GetAllAsync()
         {
             return await _context.Employees.ToListAsync();
+        }
+
+        public async Task<Employee> GetEmployeeByDocumentAndPassword(string document, string password)
+        {
+            if (document.Equals("") || password.Equals(""))
+            {
+                throw new EmployeeException("Incorrect employee document or password, please verify.");
+            }
+            var employee = await GetEmployeeByDocumentAndPassword(document, password);
+            if (employee == null)
+            {
+                throw new EmployeeException("Employee not found");
+            }
+            return employee;
         }
 
         public async Task<Employee> GetByIdAsync(int id)
