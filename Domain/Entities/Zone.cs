@@ -1,5 +1,4 @@
 ﻿namespace Domain.Entities;
-
 public partial class Zone
 {
     public int ZoneId { get; set; }

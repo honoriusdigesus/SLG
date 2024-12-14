@@ -15,7 +15,7 @@ namespace Application.Mappers
         {
             return new Domain.Entities.Login
             {
-                Token = tokenReq.Token1,
+                Refreshtoken = tokenReq.Token1,
                 Expires = tokenReq.Expires,
                 Created = tokenReq.Created,
                 Revoked = tokenReq.Revoked,
@@ -29,7 +29,7 @@ namespace Application.Mappers
             return new TokenRes
             {
                 TokenId = login.TokenId,
-                Token1 = login.Token,
+                Token1 = login.Refreshtoken,
                 Expires = login.Expires,
                 Created = login.Created,
                 Revoked = login.Revoked,

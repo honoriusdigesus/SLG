@@ -16,6 +16,7 @@ namespace Application.Services
         Task<EmployeeRes> CreateAsync(EmployeeReq employee);
         Task<int> UpdateAsync(int id, EmployeeReq employee);
         Task<int> DeleteAsync(int id);
+        Task<IActionResult> GetEmployeeByDocumentAndPassword(string document, string password);
 
     }
 }

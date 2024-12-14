@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Domain.Entities;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data;
@@ -224,12 +222,12 @@ public partial class SlgDbContext : DbContext
             entity.Property(e => e.Expires)
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("expires");
+            entity.Property(e => e.Refreshtoken)
+                .HasMaxLength(255)
+                .HasColumnName("refreshtoken");
             entity.Property(e => e.Revoked)
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("revoked");
-            entity.Property(e => e.Token)
-                .HasMaxLength(255)
-                .HasColumnName("token");
 
             entity.HasOne(d => d.Employee).WithMany(p => p.Logins)
                 .HasForeignKey(d => d.EmployeeId)

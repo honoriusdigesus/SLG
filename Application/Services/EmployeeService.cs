@@ -9,6 +9,7 @@ using Application.Mappers;
 using Application.Utils;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing.Template;
 
 namespace Application.Services
 {
@@ -18,18 +19,21 @@ namespace Application.Services
         private readonly EmployeeMapper _employeeMapper;
         private readonly MyValidator _validator;
         private readonly UtilsJwt _utilsJwt;
+        private readonly ITokenRepository _tokenRepository;
 
         public EmployeeService(
             IEmployeeRepository employeeRepository, 
             EmployeeMapper employeeMapper, 
             MyValidator myValidator, 
-            UtilsJwt utilsJwt
+            UtilsJwt utilsJwt,
+            ITokenRepository tokenRepository
             )
         {
             _employeeRepository = employeeRepository;
             _employeeMapper = employeeMapper;
             _validator = myValidator;
             _utilsJwt = utilsJwt;
+            _tokenRepository = tokenRepository;
         }
 
         public async Task<EmployeeRes> CreateAsync(EmployeeReq employee)
@@ -67,6 +71,20 @@ namespace Application.Services
             return _employeeMapper.ToResponse(await _employeeRepository.GetByIdAsync(id));
         }
 
+        public Task<IActionResult> GetEmployeeByDocumentAndPassword(string document, string password)
+        {
+            var passwordHash = _utilsJwt.EncryptPassword(password);
+            var employee = _employeeRepository.GetEmployeeByDocumentAndPassword(document, passwordHash);
+            if (employee == null)
+            {
+                throw new EmployeeException("Employee not found, please verify your information.");
+            }
+            var token = _utilsJwt.GenerateJwtToken(_employeeMapper.ToResponse(employee.Result));
+            var refreshToken = _utilsJwt.GenerateRefreshToken(employee.Result.EmployeeId);
+            var tokenEntity = _tokenRepository.CreateAsync(refreshToken);
+            var userResult = _employeeMapper.ToResponse(employee.Result);
+            return Task.FromResult(new OkObjectResult(new { userResult, token, refreh = refreshToken.Refreshtoken }) as IActionResult);
+        }
 
         public Task<int> UpdateAsync(int id, EmployeeReq employee)
         {

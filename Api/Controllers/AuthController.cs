@@ -1,4 +1,5 @@
 ﻿using Application.DTOs;
+using Application.Exceptions.Types;
 using Application.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,9 +19,9 @@ namespace Api.Controllers
 
         [HttpPost]
         [Route("Login")]
-        public async Task<IActionResult> LoginAsync([FromBody] UserLogin user)
+        public async Task<IActionResult> LoginAsync([FromBody] UserLogin userLogin)
         {
-            throw new NotImplementedException();
+            return Ok(await _employeeServices.GetEmployeeByDocumentAndPassword(userLogin.Document, userLogin.Password));
         }
     }
 }

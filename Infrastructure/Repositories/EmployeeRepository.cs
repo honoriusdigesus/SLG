@@ -50,10 +50,10 @@ namespace Infrastructure.Repositories
             {
                 throw new EmployeeException("Incorrect employee document or password, please verify.");
             }
-            var employee = await GetEmployeeByDocumentAndPassword(document, password);
+            var employee = await _context.Employees.FirstOrDefaultAsync(x => x.Document == document && x.Password == password);
             if (employee == null)
             {
-                throw new EmployeeException("Employee not found");
+                throw new EmployeeException("Employee not found, please verify your information.");
             }
             return employee;
         }

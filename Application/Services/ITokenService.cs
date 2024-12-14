@@ -10,6 +10,6 @@ namespace Application.Services
 {
     public interface ITokenService
     {
-        Task<TokenRes> CreateAsync(TokenReq token);
+        Task<TokenRes> CreateAsync(TokenReq tokenRed);
     }
 }

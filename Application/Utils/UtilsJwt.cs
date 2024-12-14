@@ -18,7 +18,7 @@ namespace Application.Utils
             _configuration = configuration;
         }
 
-        //Encrypt the token 
+        //Encrypt the password 
         public string EncryptPassword(string token)
         {
             using (SHA256 SHA256Hash = SHA256.Create())
@@ -61,7 +61,7 @@ namespace Application.Utils
         {
             var refreshToken = new Login
             {
-                Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
+                Refreshtoken = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
                 Expires = DateTime.Now.AddHours(12),
                 Created = DateTime.Now,
                 EmployeeId = employeeId
